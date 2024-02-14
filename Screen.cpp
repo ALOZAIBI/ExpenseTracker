@@ -1,71 +1,24 @@
 #include "Screen.h"
 
 Screen::Screen(Adafruit_SSD1306& d, int w, int h):display(d), SCREEN_WIDTH(w), SCREEN_HEIGHT(h){
-    currScreen = 0;
+    animateSeed = 0;
 }
 
-void Screen::mainScreen(){
-    currScreen = 0;
-    display.clearDisplay();
-    drawBorder();
-
-    //Print Main in middle of screen in big Text
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(SCREEN_WIDTH/2-20,SCREEN_HEIGHT/2-10);
-
-    display.println("Test");
-
-    drawLeftButton("Left");
-    drawMidButton("Mid");
-    drawRightButton("One");
-
-    display.display();
+void Screen::drawLeftArrow(){
+    display.drawTriangle(1,SCREEN_HEIGHT-4,8,SCREEN_HEIGHT-7,8,SCREEN_HEIGHT-1,WHITE);
 }
 
-void Screen::screenOne(){
-    currScreen = 1;
-    display.clearDisplay();
-    drawBorder();
-
-    //Print Main in middle of screen in big Text
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(SCREEN_WIDTH/2-20,SCREEN_HEIGHT/2-10);
-
-    display.println("One");
-
-    drawLeftButton("Main");
-    drawMidButton("Main");
-    drawRightButton("Two");
-
-    display.display();
+void Screen::drawRightArrow(){
+    display.drawTriangle(SCREEN_WIDTH-1,SCREEN_HEIGHT-4,SCREEN_WIDTH-8,SCREEN_HEIGHT-7,SCREEN_WIDTH-8,SCREEN_HEIGHT-1,WHITE);
 }
-
-void Screen::screenTwo(){
-    currScreen = 2;
-    display.clearDisplay();
-    drawBorder();
-
-    //Print Main in middle of screen in big Text
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(SCREEN_WIDTH/2-20,SCREEN_HEIGHT/2-10);
-
-    display.println("Two");
-
-    drawLeftButton("One");
-    drawMidButton("Main");
-    drawRightButton("Right");
-
-    display.display();
-}
-
 
 void Screen::drawLeftButton(String text){
+    if(text==""){
+        drawLeftArrow();
+    }
     //Set cursor to bottom left
     display.setTextSize(1);
-    display.setCursor(2,SCREEN_HEIGHT-9);
+    display.setCursor(2,SCREEN_HEIGHT-8);
     display.setTextColor(WHITE);
     display.println(text);
 }
@@ -73,23 +26,41 @@ void Screen::drawLeftButton(String text){
 void Screen::drawMidButton(String text){
     //Set cursor to bottom left
     display.setTextSize(1);
-    display.setCursor(SCREEN_WIDTH/2-10,SCREEN_HEIGHT-9);
+    display.setCursor(SCREEN_WIDTH/2-10,SCREEN_HEIGHT-8);
     display.setTextColor(WHITE);
     display.println(text);
 }
 
 void Screen::drawRightButton(String text){
+    if(text==""){
+        drawRightArrow();
+    }
     //Since at textSize 1, 1 char is 6 pixels wide we set cursor to have a 1 pixel margin from the right border
     //Set cursor to bottom left
     display.setTextSize(1);
     byte xPos = (SCREEN_WIDTH-1)-text.length()*6;
-    display.setCursor(xPos,SCREEN_HEIGHT-9);
+    display.setCursor(xPos,SCREEN_HEIGHT-8);
     display.setTextColor(WHITE);
     display.println(text);
 }
 
 void Screen::drawBorder(){
-    display.drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT,WHITE);
+    // animateSeed+=10;
+    //-8 because we want to leave space for the buttons below the border
+    display.drawRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT-8,WHITE);
+    // Draw a black line of 30 pixels that will be animated along the border
+    // for(int i = 0; i<30;i++){
+    //     display.drawPixel(i+(animateSeed%SCREEN_WIDTH),0,BLACK);
+    //     display.drawPixel(0,SCREEN_WIDTH-(animateSeed%SCREEN_WIDTH)-i,BLACK);
+    //     display.drawPixel(SCREEN_WIDTH,i+(animateSeed%SCREEN_WIDTH),BLACK);
+    //     display.drawPixel(30-SCREEN_WIDTH+i-(animateSeed%SCREEN_WIDTH),SCREEN_HEIGHT-9,BLACK);
+    // }
+    // display.drawPixel(SCREEN_WIDTH,0,BLACK);
+    // // display.drawPixel(SCREEN_WIDTH-1,0,BLACK);
+
+    // display.drawPixel(0,0,BLACK);
+    // display.drawPixel(1,0,BLACK);
+    // Serial.println(SCREEN_WIDTH-(animateSeed%SCREEN_WIDTH));
 }
 
 

@@ -22,10 +22,10 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #pragma endregion
 
 DataModel dataModel;
-Screen view(display, SCREEN_WIDTH, SCREEN_HEIGHT);
-Controller controller(dataModel, view);
+MainScreen mainScreen(display, SCREEN_WIDTH, SCREEN_HEIGHT);
+Controller controller(dataModel, mainScreen);
 
-
+int fps = 24;
 
 void setup() {
   Serial.begin(9600);
@@ -39,8 +39,7 @@ void setup() {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-  
-  view.mainScreen();
+  controller.mainScreen.drawScreen();
 }
 
 void loop() {
@@ -54,5 +53,6 @@ void loop() {
   if(digitalRead(rightButtonPin)){
     controller.btnRight();
   }
+  controller.updateScreen();
 
 }

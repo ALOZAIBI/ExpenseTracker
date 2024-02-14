@@ -2,14 +2,16 @@
 #define Controller_h
 
 #include "DataModel.h"
-#include "Screen.h"
+#include "MainScreen.h"
 
 class Controller {
-    private:
+    protected:
         DataModel& dataModel;
-        Screen& view;
+        int currScreen;
     public:
-        Controller(DataModel& d, Screen& v);
+        MainScreen& mainScreen;
+        Controller(DataModel& d, MainScreen& mS);
+        void updateScreen();
         void btnLeft();
         void btnMid();
         void btnRight();
